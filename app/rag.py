@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Explicitly load .env from project root 
 env_path = Path(__file__).resolve().parent.parent / ".env" 
 load_dotenv(dotenv_path=env_path)  
 client = Groq(
