@@ -1,0 +1,17 @@
+Claim Number: CLM-2026-0003
+Patient ID: P10003
+Patient Name: Robert Wilson
+Patient DOB: 1969-03-03
+Payer: UnitedHealthcare
+Member ID: UHC30003
+Provider NPI: 3456789012
+Provider Name: Metro Health Associates
+Date of Service: 2026-07-20
+Place of Service: 22
+Diagnosis Codes: M54.5, G89.29
+Procedure Codes: 97110, 97140
+Billed Amount: 1200.00
+Allowed Amount: 850.00
+Paid Amount: 500.00
+Claim Status: Pending Review
+Priority: High

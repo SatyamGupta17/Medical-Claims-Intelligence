@@ -1,0 +1,492 @@
+[
+  {
+    "id": "CLM-SAMPLE-0003",
+    "patient_id": "P10003",
+    "patient": "Robert Wilson",
+    "patient_dob": "1969-03-03",
+    "member_id": "UHC30003",
+    "payer": "UnitedHealthcare",
+    "provider": "Metro Health Associates",
+    "npi": "3456789012",
+    "service_date": "2026-07-20",
+    "diagnosis": "M54.5, G89.29",
+    "procedure": "97110, 97140",
+    "amount": 1200.0,
+    "allowed_amount": 850.0,
+    "paid_amount": 500.0,
+    "place_of_service": "22",
+    "source_file": "claim_review.json",
+    "status": "Ready to submit",
+    "created_at": "2026-09-17T12:02:20.695139+00:00",
+    "updated_at": "2026-09-17T12:02:20.695149+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Ready to submit",
+        "reason": "All required edits passed",
+        "at": "2026-09-17T12:02:20.695139+00:00"
+      }
+    ],
+    "validation": [],
+    "risk_score": 4,
+    "risk_band": "Low",
+    "recommendation": "Approve for submission. Run a final payer eligibility check before batching.",
+    "ai_explanation": "**Evidence Summary**  \n- **Payer:** UnitedHealthcare  \n- **Provider:** Metro Health Associates  \n- **Diagnoses:** M54.5 (low back pain), G89.29 (other chronic pain)  \n- **Procedures:** 97110 (therapeutic exercise), 97140 (manual therapy)  \n- **Charge Amount:**",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-SAMPLE-0003",
+    "patient_id": "P10003",
+    "patient": "Robert Wilson",
+    "patient_dob": "1969-03-03",
+    "member_id": "UHC30003",
+    "payer": "UnitedHealthcare",
+    "provider": "Metro Health Associates",
+    "npi": "3456789012",
+    "service_date": "2026-07-20",
+    "diagnosis": "M54.5, G89.29",
+    "procedure": "97110, 97140",
+    "amount": 1200.0,
+    "allowed_amount": 850.0,
+    "paid_amount": 500.0,
+    "place_of_service": "22",
+    "source_file": "claim_review.json",
+    "status": "Ready to submit",
+    "created_at": "2026-09-17T11:41:41.465451+00:00",
+    "updated_at": "2026-09-17T11:41:41.465459+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Ready to submit",
+        "reason": "All required edits passed",
+        "at": "2026-09-17T11:41:41.465451+00:00"
+      }
+    ],
+    "validation": [],
+    "risk_score": 4,
+    "risk_band": "Low",
+    "recommendation": "Approve for submission. Run a final payer eligibility check before batching.",
+    "ai_explanation": "**Evidence Summary**  \n- **Payer:** UnitedHealthcare  \n- **Provider:** Metro Health Associates  \n- **Diagnoses:** M54.5 (low back pain), G89.29 (other chronic pain)  \n- **Procedures:** 97110 (therapeutic exercise), 97140 (manual therapy)  \n- **Charge",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-SAMPLE-0001",
+    "patient_id": "P10001",
+    "patient": "John Carter",
+    "patient_dob": "1985-04-12",
+    "member_id": "MCR10001",
+    "payer": "Medicare",
+    "provider": "City Medical Center",
+    "npi": "1234567890",
+    "service_date": "2026-08-15",
+    "diagnosis": "E11.9, I10",
+    "procedure": "99213",
+    "amount": 150.0,
+    "allowed_amount": 120.0,
+    "paid_amount": 120.0,
+    "place_of_service": "11",
+    "source_file": "claim_clean.docx",
+    "status": "Ready to submit",
+    "created_at": "2026-09-17T11:41:30.750823+00:00",
+    "updated_at": "2026-09-17T11:41:30.750836+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Ready to submit",
+        "reason": "All required edits passed",
+        "at": "2026-09-17T11:41:30.750823+00:00"
+      }
+    ],
+    "validation": [],
+    "risk_score": 4,
+    "risk_band": "Low",
+    "recommendation": "Approve for submission. Run a final payer eligibility check before batching.",
+    "ai_explanation": "**Explanation of claim evidence**  \n- **Payer:** Medicare  \n- **Provider:** City Medical Center  \n- **Diagnoses:** E11.9 (type\u202f2 diabetes mellitus without complications), I10 (essential hypertension)  \n- **Procedure:** 99213 (office visit, established patient)  \n- **Amount billed:** $",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-SAMPLE-0002",
+    "patient_id": "P10002",
+    "patient": "Sarah Miller",
+    "patient_dob": "1978-09-21",
+    "member_id": "AET20002",
+    "payer": "Aetna",
+    "provider": "Northside Family Clinic",
+    "npi": "2345678901",
+    "service_date": "2026-08-02",
+    "diagnosis": "J06.9",
+    "procedure": "99214",
+    "amount": 250.0,
+    "allowed_amount": 190.0,
+    "paid_amount": 150.0,
+    "place_of_service": "11",
+    "source_file": "claim_pending.csv",
+    "status": "Ready to submit",
+    "created_at": "2026-09-17T11:41:10.967995+00:00",
+    "updated_at": "2026-09-17T11:41:10.968004+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Ready to submit",
+        "reason": "All required edits passed",
+        "at": "2026-09-17T11:41:10.967995+00:00"
+      }
+    ],
+    "validation": [],
+    "risk_score": 4,
+    "risk_band": "Low",
+    "recommendation": "Approve for submission. Run a final payer eligibility check before batching.",
+    "ai_explanation": "**Evidence Summary**  \n- **Payer:** Aetna  \n- **Provider:** Northside Family Clinic  \n- **Diagnosis:** J06.9 (acute upper respiratory infection, unspecified)  \n- **Procedure:** 99214 (established patient office visit, moderate complexity)  \n- **Charge:** $250.00  \n- **Place of Service:** 11 (office)  \n- **Risk Score/Band:** 4\u202f/\u202fLow  \n-",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-SAMPLE-0004",
+    "patient_id": "P10004",
+    "patient": "Emily Davis",
+    "patient_dob": "1990-11-11",
+    "member_id": "AET40004",
+    "payer": "Aetna",
+    "provider": "Westside Medical Group",
+    "npi": "12345",
+    "service_date": "2026-08-10",
+    "diagnosis": "Procedure Codes: 99214",
+    "procedure": "99214",
+    "amount": 2500.0,
+    "allowed_amount": 1200.0,
+    "paid_amount": 1500.0,
+    "place_of_service": "99",
+    "source_file": "claim_invalid.txt",
+    "status": "Denied",
+    "created_at": "2026-09-17T11:38:58.445065+00:00",
+    "updated_at": "2026-09-17T11:40:03.002780+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Needs review",
+        "reason": "High-severity edit requires correction",
+        "at": "2026-09-17T11:38:58.445065+00:00"
+      },
+      {
+        "status": "Denied",
+        "reason": "Operator action",
+        "at": "2026-09-17T11:40:03.002780+00:00"
+      }
+    ],
+    "validation": [
+      {
+        "severity": "High",
+        "code": "INVALID_NPI",
+        "message": "NPI must contain exactly 10 digits",
+        "action": "Verify the rendering provider NPI"
+      },
+      {
+        "severity": "High",
+        "code": "PAID_EXCEEDS_ALLOWED",
+        "message": "Paid amount exceeds allowed amount",
+        "action": "Reconcile remittance and payment amounts"
+      },
+      {
+        "severity": "Medium",
+        "code": "POS_CODE",
+        "message": "Place of service code is not in the supported set",
+        "action": "Verify the POS code against payer policy"
+      }
+    ],
+    "risk_score": 68,
+    "risk_band": "High",
+    "recommendation": "Hold claim. Correct high-severity data issues and re-run validation before submission.",
+    "ai_explanation": "**Claim Evidence Summary",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-SAMPLE-0001",
+    "patient_id": "P10001",
+    "patient": "John Carter",
+    "patient_dob": "1985-04-12",
+    "member_id": "MCR10001",
+    "payer": "Medicare",
+    "provider": "City Medical Center",
+    "npi": "1234567890",
+    "service_date": "2026-08-15",
+    "diagnosis": "E11.9, I10",
+    "procedure": "99213",
+    "amount": 150.0,
+    "allowed_amount": 120.0,
+    "paid_amount": 120.0,
+    "place_of_service": "11",
+    "source_file": "claim_clean.txt",
+    "status": "Paid",
+    "created_at": "2026-09-17T11:38:50.136928+00:00",
+    "updated_at": "2026-09-17T11:40:24.627166+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Ready to submit",
+        "reason": "All required edits passed",
+        "at": "2026-09-17T11:38:50.136928+00:00"
+      },
+      {
+        "status": "Paid",
+        "reason": "Operator action",
+        "at": "2026-09-17T11:40:24.627166+00:00"
+      }
+    ],
+    "validation": [],
+    "risk_score": 4,
+    "risk_band": "Low",
+    "recommendation": "Approve for submission. Run a final payer eligibility check before batching.",
+    "ai_explanation": "**Explanation of Claim Evidence**  \n- **Payer:** Medicare  \n- **Provider:** City Medical Center  \n- **Diagnoses:** E11.9 (type\u202f2 diabetes mellitus without complications), I10 (essential hypertension)  \n- **Procedure:** 99213 (office visit, established patient)  \n- **Amount Billed:** $150.00  \n- **Place of Service",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-SAMPLE-0001",
+    "patient_id": "P10001",
+    "patient": "John Carter",
+    "patient_dob": "1985-04-12",
+    "member_id": "MCR10001",
+    "payer": "Medicare",
+    "provider": "City Medical Center",
+    "npi": "1234567890",
+    "service_date": "2026-08-15",
+    "diagnosis": "E11.9, I10",
+    "procedure": "99213",
+    "amount": 150.0,
+    "allowed_amount": 120.0,
+    "paid_amount": 120.0,
+    "place_of_service": "11",
+    "source_file": "claim_clean.txt",
+    "status": "Ready to submit",
+    "created_at": "2026-09-17T11:38:32.531559+00:00",
+    "updated_at": "2026-09-17T11:38:32.531569+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Ready to submit",
+        "reason": "All required edits passed",
+        "at": "2026-09-17T11:38:32.531559+00:00"
+      }
+    ],
+    "validation": [],
+    "risk_score": 4,
+    "risk_band": "Low",
+    "recommendation": "Approve for submission. Run a final payer eligibility check before batching.",
+    "ai_explanation": "**Explanation of claim evidence**  \n- **Payer:** Medicare  \n- **Provider:** City Medical Center  \n- **Diagnoses:** E11.9 (type\u202f2 diabetes mellitus without complications), I10 (essential hypertension)  \n- **Procedure:** 99213 (office visit, established patient)  \n- **Amount billed:** $",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-24081",
+    "patient_id": "Not provided",
+    "patient": "Maya Patel",
+    "patient_dob": "Not provided",
+    "member_id": "HZP-902144",
+    "payer": "Horizon Health",
+    "provider": "Northstar Family Clinic",
+    "npi": "1245789630",
+    "service_date": "08/28/2026",
+    "diagnosis": "Not provided",
+    "procedure": "Not provided",
+    "amount": 185.0,
+    "allowed_amount": 0.0,
+    "paid_amount": 0.0,
+    "place_of_service": "11",
+    "source_file": "synthetic_batch.txt",
+    "status": "Ready to submit",
+    "created_at": "2026-09-17T11:31:22.362229+00:00",
+    "updated_at": "2026-09-17T11:31:22.362247+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Needs review",
+        "reason": "High-severity edit requires correction",
+        "at": "2026-09-17T11:31:22.362229+00:00"
+      }
+    ],
+    "validation": [
+      {
+        "severity": "High",
+        "code": "MISSING_FIELD",
+        "message": "Diagnosis code is missing",
+        "action": "Add diagnosis before submission"
+      },
+      {
+        "severity": "High",
+        "code": "MISSING_FIELD",
+        "message": "Procedure code is missing",
+        "action": "Add procedure before submission"
+      },
+      {
+        "severity": "High",
+        "code": "CODE_PAIR",
+        "message": "Diagnosis and procedure codes are required for medical necessity review",
+        "action": "Add valid ICD-10 and CPT/HCPCS codes"
+      }
+    ],
+    "risk_score": 84,
+    "risk_band": "High",
+    "recommendation": "Hold claim. Correct high-severity data issues and re-run validation before submission.",
+    "ai_explanation": "**Evidence Summary**  \n- The claim (CLM\u201124081) lacks both a diagnosis code and a procedure code.  \n- Validation edits flag three high\u2011severity issues: missing diagnosis, missing procedure, and the requirement that a diagnosis\u2011procedure pair be present for medical\u2011necessity review.  \n\n**Reason**  \nThe claim is incomplete because essential coding fields (ICD\u201110 diagnosis and CPT/HCPCS procedure) are absent, preventing any medical\u2011necessity or payment determination.  \n\n**Recommended Action**  \nAdd a valid diagnosis code and the corresponding procedure code (ensuring they form an appropriate ICD\u201110/CPT pair) before resubmitting the claim to Horizon Health.",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-24082",
+    "patient_id": "Not provided",
+    "patient": "Oliver Chen",
+    "patient_dob": "Not provided",
+    "member_id": "AET-551028",
+    "payer": "Aetna",
+    "provider": "Harborview Ortho",
+    "npi": "1245789630",
+    "service_date": "08/29/2026",
+    "diagnosis": "Not provided",
+    "procedure": "Not provided",
+    "amount": 640.0,
+    "allowed_amount": 0.0,
+    "paid_amount": 0.0,
+    "place_of_service": "22",
+    "source_file": "synthetic_batch.txt",
+    "status": "Submitted",
+    "created_at": "2026-09-17T11:31:24.183850+00:00",
+    "updated_at": "2026-09-17T11:31:24.183860+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Needs review",
+        "reason": "High-severity edit requires correction",
+        "at": "2026-09-17T11:31:24.183850+00:00"
+      }
+    ],
+    "validation": [
+      {
+        "severity": "High",
+        "code": "MISSING_FIELD",
+        "message": "Diagnosis code is missing",
+        "action": "Add diagnosis before submission"
+      },
+      {
+        "severity": "High",
+        "code": "MISSING_FIELD",
+        "message": "Procedure code is missing",
+        "action": "Add procedure before submission"
+      },
+      {
+        "severity": "High",
+        "code": "CODE_PAIR",
+        "message": "Diagnosis and procedure codes are required for medical necessity review",
+        "action": "Add valid ICD-10 and CPT/HCPCS codes"
+      }
+    ],
+    "risk_score": 84,
+    "risk_band": "High",
+    "recommendation": "Hold claim. Correct high-severity data issues and re-run validation before submission.",
+    "ai_explanation": "**Evidence Summary**  \n- The claim (CLM\u201124082) lacks both a diagnosis code and a procedure code.  \n- Validation edits flag these omissions as high\u2011severity \u201cMISSING_FIELD\u201d errors and note that a diagnosis\u2011procedure pair is required for medical\u2011necessity review.\n\n**Reason**  \nThe claim is incomplete because essential coding fields (ICD\u201110 diagnosis and CPT/HCPCS procedure) are missing, preventing any eligibility, medical\u2011necessity, or payment determination.\n\n**Recommended Action**  \nAdd a valid diagnosis code and the corresponding procedure code (ensuring they form an appropriate ICD\u201110/CPT pair) before resubmitting the claim.",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-24083",
+    "patient_id": "Not provided",
+    "patient": "Sofia Rivera",
+    "patient_dob": "Not provided",
+    "member_id": "Not",
+    "payer": "Meridian Health",
+    "provider": "Westside Imaging",
+    "npi": "",
+    "service_date": "08/30/2026",
+    "diagnosis": "Not provided",
+    "procedure": "Not provided",
+    "amount": 6450.0,
+    "allowed_amount": 0.0,
+    "paid_amount": 0.0,
+    "place_of_service": "22",
+    "source_file": "synthetic_batch.txt",
+    "status": "Needs review",
+    "created_at": "2026-09-17T11:31:25.288352+00:00",
+    "updated_at": "2026-09-17T11:31:25.288362+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Needs review",
+        "reason": "High-severity edit requires correction",
+        "at": "2026-09-17T11:31:25.288352+00:00"
+      }
+    ],
+    "validation": [
+      {
+        "severity": "High",
+        "code": "MISSING_FIELD",
+        "message": "Diagnosis code is missing",
+        "action": "Add diagnosis before submission"
+      },
+      {
+        "severity": "High",
+        "code": "MISSING_FIELD",
+        "message": "Procedure code is missing",
+        "action": "Add procedure before submission"
+      },
+      {
+        "severity": "High",
+        "code": "CODE_PAIR",
+        "message": "Diagnosis and procedure codes are required for medical necessity review",
+        "action": "Add valid ICD-10 and CPT/HCPCS codes"
+      }
+    ],
+    "risk_score": 99,
+    "risk_band": "High",
+    "recommendation": "Hold claim. Correct high-severity data issues and re-run validation before submission.",
+    "ai_explanation": "**Evidence Summary**  \n- The claim (CLM\u201124083) lacks both a diagnosis code and a procedure code.  \n- Validation edits flag these omissions as high\u2011severity \u201cMISSING_FIELD\u201d errors and note that a diagnosis\u2011procedure pair is required for medical necessity review.  \n\n**Reason**  \nThe claim is incomplete because essential coding fields (ICD\u201110 diagnosis and CPT/HCPCS procedure) are missing, preventing any medical necessity or payment determination.  \n\n**Recommended Action**  \nAdd a valid diagnosis code and the corresponding procedure code to the claim, then resubmit for review.",
+    "ai_source": "groq"
+  },
+  {
+    "id": "CLM-24084",
+    "patient_id": "Not provided",
+    "patient": "Ethan Williams",
+    "patient_dob": "Not provided",
+    "member_id": "UHC-771240",
+    "payer": "United Healthcare",
+    "provider": "Lakeside Pediatrics",
+    "npi": "1245789630",
+    "service_date": "09/01/2026",
+    "diagnosis": "Not provided",
+    "procedure": "Not provided",
+    "amount": 240.0,
+    "allowed_amount": 0.0,
+    "paid_amount": 0.0,
+    "place_of_service": "11",
+    "source_file": "synthetic_batch.txt",
+    "status": "Paid",
+    "created_at": "2026-09-17T11:31:26.315538+00:00",
+    "updated_at": "2026-09-17T11:31:26.315549+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Needs review",
+        "reason": "High-severity edit requires correction",
+        "at": "2026-09-17T11:31:26.315538+00:00"
+      }
+    ],
+    "validation": [
+      {
+        "severity": "High",
+        "code": "MISSING_FIELD",
+        "message": "Diagnosis code is missing",
+        "action": "Add diagnosis before submission"
+      },
+      {
+        "severity": "High",
+        "code": "MISSING_FIELD",
+        "message": "Procedure code is missing",
+        "action": "Add procedure before submission"
+      },
+      {
+        "severity": "High",
+        "code": "CODE_PAIR",
+        "message": "Diagnosis and procedure codes are required for medical necessity review",
+        "action": "Add valid ICD-10 and CPT/HCPCS codes"
+      }
+    ],
+    "risk_score": 84,
+    "risk_band": "High",
+    "recommendation": "Hold claim. Correct high-severity data issues and re-run validation before submission.",
+    "ai_explanation": "**Evidence Summary**  \n- The claim (CLM\u201124084) lacks both a diagnosis code and a procedure code.  \n- Validation edits flag three high\u2011severity issues: missing diagnosis, missing procedure, and the need for a diagnosis\u2011procedure pair for medical\u2011necessity review.  \n\n**Reason**  \nThe claim is incomplete because required clinical codes are absent, preventing any medical\u2011necessity or payment determination.  \n\n**Recommended Action**  \nAdd a valid ICD\u201110 diagnosis code and the corresponding CPT/HCPCS procedure code, then resubmit the claim for processing.",
+    "ai_source": "groq"
+  }
+]

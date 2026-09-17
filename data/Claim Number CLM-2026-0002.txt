@@ -1,0 +1,17 @@
+Claim Number: CLM-2026-0002
+Patient ID: P10002
+Patient Name: Sarah Miller
+Patient DOB: 1978-09-21
+Payer: Aetna
+Member ID: AET20002
+Provider NPI: 2345678901
+Provider Name: Northside Family Clinic
+Date of Service: 2026-08-02
+Place of Service: 11
+Diagnosis Codes: J06.9
+Procedure Codes: 99214
+Billed Amount: 250.00
+Allowed Amount: 190.00
+Paid Amount: 150.00
+Claim Status: Pending
+Priority: Medium

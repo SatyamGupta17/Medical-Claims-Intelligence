@@ -1,0 +1,2 @@
+claim_number,patient_id,patient_name,patient_dob,payer,member_id,provider_npi,provider_name,date_of_service,place_of_service,diagnosis_codes,procedure_codes,billed_amount,allowed_amount,paid_amount,claim_status,priority
+CLM-SAMPLE-0002,P10002,Sarah Miller,1978-09-21,Aetna,AET20002,2345678901,Northside Family Clinic,2026-08-02,11,J06.9,99214,250.00,190.00,150.00,Pending,Medium

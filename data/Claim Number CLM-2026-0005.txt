@@ -1,0 +1,17 @@
+Claim Number: CLM-2026-0005
+Patient ID: P10005
+Patient Name: Michael Brown
+Patient DOB: 1975-05-18
+Payer: Medicare
+Member ID: MCR50005
+Provider NPI: 987654
+Provider Name: Central Care Hospital
+Date of Service: 2026-08-12
+Place of Service: 21
+Diagnosis Codes: I10
+Procedure Codes: 99223
+Billed Amount: 1800.00
+Allowed Amount: 1400.00
+Paid Amount: 900.00
+Claim Status: Rejected
+Priority: High

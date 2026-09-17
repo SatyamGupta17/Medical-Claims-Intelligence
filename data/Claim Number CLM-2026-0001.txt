@@ -1,0 +1,17 @@
+Claim Number: CLM-2026-0001
+Patient ID: P10001
+Patient Name: John Carter
+Patient DOB: 1985-04-12
+Payer: Medicare
+Member ID: MCR10001
+Provider NPI: 1234567890
+Provider Name: City Medical Center
+Date of Service: 2026-08-15
+Place of Service: 11
+Diagnosis Codes: E11.9, I10
+Procedure Codes: 99213
+Billed Amount: 150.00
+Allowed Amount: 120.00
+Paid Amount: 120.00
+Claim Status: Clean
+Priority: Low

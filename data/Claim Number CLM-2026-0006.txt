@@ -1,0 +1,17 @@
+Claim Number: CLM-2026-0006
+Patient ID: P10006
+Patient Name: Lisa Anderson
+Patient DOB: 1988-06-27
+Payer: BlueCross
+Member ID: BC60006
+Provider NPI: 4567890123
+Provider Name: Lakeside Health Clinic
+Date of Service: 2026-08-05
+Place of Service: 11
+Diagnosis Codes: E78.5
+Procedure Codes: 99213
+Billed Amount: 500.00
+Allowed Amount: 600.00
+Paid Amount: 650.00
+Claim Status: Error
+Priority: Medium

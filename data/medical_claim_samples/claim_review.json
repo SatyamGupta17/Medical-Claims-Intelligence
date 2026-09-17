@@ -1,0 +1,19 @@
+{
+  "claim_number": "CLM-SAMPLE-0003",
+  "patient_id": "P10003",
+  "patient_name": "Robert Wilson",
+  "patient_dob": "1969-03-03",
+  "payer": "UnitedHealthcare",
+  "member_id": "UHC30003",
+  "provider_npi": "3456789012",
+  "provider_name": "Metro Health Associates",
+  "date_of_service": "2026-07-20",
+  "place_of_service": "22",
+  "diagnosis_codes": "M54.5, G89.29",
+  "procedure_codes": "97110, 97140",
+  "billed_amount": 1200.00,
+  "allowed_amount": 850.00,
+  "paid_amount": 500.00,
+  "claim_status": "Pending Review",
+  "priority": "High"
+}
