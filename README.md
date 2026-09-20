@@ -193,7 +193,15 @@ The easiest free setup is:
 4. Set the main file path to `frontend/app.py`.
 5. In **Advanced settings**, select Python 3.11 if available.
 6. Add the contents of `requirements-deploy.txt` to the app's dependency configuration, or rename/copy it to `requirements.txt` in the deployed branch.
-7. Add `GROQ_API_KEY` and `GROQ_MODEL` as Streamlit secrets if AI explanations are required.
+7. In **Advanced settings -> Secrets**, add the Render URL and optional Groq settings as valid TOML:
+
+```toml
+CLAIMPILOT_API_URL = "https://your-render-service.onrender.com"
+GROQ_API_KEY = "your_rotated_groq_key"
+GROQ_MODEL = "openai/gpt-oss-120b"
+```
+
+  `CLAIMPILOT_API_URL` must not include a trailing `/api`. Add `GROQ_API_KEY` and `GROQ_MODEL` only if AI explanations are required.
 8. Deploy and open the generated `streamlit.app` URL.
 
 The frontend processes uploaded claims locally, so it does not require the Render API for the core intake, extraction, validation, risk, dashboard, and report workflow.

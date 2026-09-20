@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
+import requests
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +18,19 @@ if str(ROOT) not in sys.path:
 if str(FRONTEND_DIR) not in sys.path:
     sys.path.insert(0, str(FRONTEND_DIR))
 
-from claim_engine import STATUS_COLORS, STATUSES, extract_claim, load_claims, save_claims, update_claim
+from claim_engine import (
+    STATUS_COLORS,
+    STATUSES,
+    api_claims,
+    api_enabled,
+    api_update_claim_status,
+    api_upload_claim,
+    extract_claim,
+    load_claims,
+    save_claims,
+    update_claim,
+)
+from app.extractor import extract_text
 
 st.set_page_config(page_title="ClaimPilot | Revenue Operations", page_icon="CP", layout="wide", initial_sidebar_state="expanded")
 
@@ -127,12 +140,23 @@ def render_overview(claims: list[dict[str, Any]]) -> None:
         st.markdown(f'<div class="queue-card"><div style="display:flex;justify-content:space-between"><span class="claim-id">{claim["id"]} · {claim["patient"]}</span><span>{badge(claim["risk_band"], "risk-" + claim["risk_band"].lower())}</span></div><div class="small" style="margin-top:.35rem">{claim["payer"]} · {claim["procedure"]} · {money(float(claim["amount"]))} · {claim["status"]}</div><div style="margin-top:.6rem;font-size:.82rem">{issue}</div></div>', unsafe_allow_html=True)
 
 
+def render_extraction_pipeline() -> None:
+    st.markdown('<div class="section"><div class="eyebrow">Claim intake</div><h2>Extraction pipeline</h2></div>', unsafe_allow_html=True)
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    for number, title in [
+        ("01", "OCR / text extraction"),
+        ("02", "Structured field mapping"),
+        ("03", "Coding and completeness edits"),
+        ("04", "Risk and next-best action"),
+    ]:
+        st.markdown(f'<div style="display:flex;gap:.75rem;padding:.7rem 0;border-bottom:1px solid #edf1ee"><span style="font-family:Space Grotesk;color:#087f73;font-weight:700">{number}</span><span>{title}</span></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
 def parse_upload(uploaded_file: Any) -> str:
     suffix = Path(uploaded_file.name).suffix.lower()
     content = uploaded_file.getvalue()
-    if suffix == ".pdf":
-        from app.extractor import extract_text
-
+    if suffix == ".pdf": 
         try:
             return extract_text(content)
         except ValueError as error:
@@ -152,11 +176,12 @@ def parse_upload(uploaded_file: Any) -> str:
 def render_extraction_result(claim: dict[str, Any]) -> None:
     """Show the result of the most recent intake run without hiding the details."""
     st.markdown('<div class="section"><div class="eyebrow">Latest result</div><h2>Extraction and validation complete</h2></div>', unsafe_allow_html=True)
-    header_cols = st.columns(4)
-    header_cols[0].metric("Claim ID", claim["id"])
-    header_cols[1].metric("Fields mapped", "10 / 10" if claim.get("patient") != "Unknown patient" else "Needs review")
-    header_cols[2].metric("Risk score", f"{claim['risk_score']} / 99")
-    header_cols[3].metric("Workflow", claim["status"])
+    with st.container(key="extraction_header"):
+        header_cols = st.columns(4)
+        header_cols[0].metric("Claim ID", claim["id"])
+        header_cols[1].metric("Fields mapped", "10 / 10" if claim.get("patient") != "Unknown patient" else "Needs review")
+        header_cols[2].metric("Risk score", f"{claim['risk_score']} / 99")
+        header_cols[3].metric("Workflow", claim["status"])
     details, review = st.columns([1.15, 1])
     with details:
         st.markdown('<div class="panel"><div style="font-weight:700;margin-bottom:.7rem">Structured claim data</div>', unsafe_allow_html=True)
@@ -199,43 +224,41 @@ def render_extraction_result(claim: dict[str, Any]) -> None:
 
 def render_upload(claims: list[dict[str, Any]]) -> list[dict[str, Any]]:
     st.markdown('<div class="section"><div class="eyebrow">Intake</div><h2>Upload and structure a claim</h2><div class="subtitle">Drop a synthetic UB-04, CMS-1500, remittance, or labeled text document. ClaimPilot extracts fields and runs edits immediately.</div></div>', unsafe_allow_html=True)
-    left, right = st.columns([1.05, 1])
-    with left:
-        uploaded = st.file_uploader("Claim document", type=[ "txt", "csv", "json", "docx"], label_visibility="collapsed", key="claim_document_uploader")
-        if uploaded:
-            st.caption(f"{uploaded.name} · {uploaded.size / 1024:.1f} KB")
-            with st.status("Processing claim document", expanded=True) as processing:
-                try:
-                    processing.write("Reading uploaded document")
+    uploaded = st.file_uploader("Claim document", type=["pdf", "txt", "csv", "json", "docx"], label_visibility="collapsed", key=widget_key("claim_document_uploader"))
+    if uploaded:
+        st.caption(f"{uploaded.name} · {uploaded.size / 1024:.1f} KB")
+        with st.status("Processing claim document", expanded=True) as processing:
+            try:
+                processing.write("Reading uploaded document")
+                if api_enabled():
+                    claim = api_upload_claim(uploaded.name, uploaded.getvalue())
+                else:
                     text = parse_upload(uploaded)
                     if not text.strip():
                         raise RuntimeError("The uploaded document contains no readable text.")
                     processing.write("Mapping document fields into claim structure")
                     claim = extract_claim(text, uploaded.name)
-                    processing.write("Running completeness, coding, and financial edits")
-                    processing.write(f"Calculated {claim['risk_band'].lower()} risk score: {claim['risk_score']} / 99")
-                    processing.write(f"Automatically routed to: {claim['status']}")
-                except RuntimeError as error:
-                    processing.update(label="Claim processing stopped", state="error")
-                    st.error(str(error))
-                else:
-                    processing.update(label="Claim processed successfully", state="complete")
-                    token = f"{uploaded.name}:{uploaded.size}"
-                    if st.session_state.get("last_processed_upload") != token:
-                        claims.insert(0, claim)
-                        save_claims(claims)
-                        st.session_state.last_processed_upload = token
-                    st.session_state.selected_claim = claim["id"]
-                    st.session_state.last_intake_claim = claim
-                    st.success(f"{claim['id']} extracted, validated, scored, and routed")
-        if st.session_state.get("last_intake_claim"):
-            render_extraction_result(st.session_state.last_intake_claim)
-        st.markdown('<div class="panel" style="margin-top:1rem"><div style="font-weight:700">Synthetic document format</div><div class="small" style="margin-top:.5rem">Use labels such as Patient, Member ID, Payer, Provider, NPI, Date of Service, Diagnosis, Procedure, Billed Amount, and Place of Service.</div></div>', unsafe_allow_html=True)
-    with right:
-        st.markdown('<div class="panel"><div style="font-weight:700;margin-bottom:.7rem">Extraction pipeline</div>', unsafe_allow_html=True)
-        for number, title in [("01", "OCR / text extraction"), ("02", "Structured field mapping"), ("03", "Coding and completeness edits"), ("04", "Risk and next-best action")]:
-            st.markdown(f'<div style="display:flex;gap:.75rem;padding:.7rem 0;border-bottom:1px solid #edf1ee"><span style="font-family:Space Grotesk;color:#087f73;font-weight:700">{number}</span><span>{title}</span></div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+                processing.write("Running completeness, coding, and financial edits")
+                processing.write(f"Calculated {claim['risk_band'].lower()} risk score: {claim['risk_score']} / 99")
+                processing.write(f"Automatically routed to: {claim['status']}")
+            except RuntimeError as error:
+                processing.update(label="Claim processing stopped", state="error")
+                st.error(str(error))
+            else:
+                processing.update(label="Claim processed successfully", state="complete")
+                token = f"{uploaded.name}:{uploaded.size}"
+                if not api_enabled() and st.session_state.get("last_processed_upload") != token:
+                    claims.insert(0, claim)
+                    save_claims(claims)
+                    st.session_state.last_processed_upload = token
+                st.session_state.selected_claim = claim["id"]
+                st.session_state.last_intake_claim = claim
+                st.success(f"{claim['id']} extracted, validated, scored, and routed")
+    if st.session_state.get("last_intake_claim"):
+        render_extraction_result(st.session_state.last_intake_claim)
+    st.markdown('<div class="panel" style="margin-top:1rem"><div style="font-weight:700">Synthetic document format</div><div class="small" style="margin-top:.5rem">Use labels such as Patient, Member ID, Payer, Provider, NPI, Date of Service, Diagnosis, Procedure, Billed Amount, and Place of Service.</div></div>', unsafe_allow_html=True)
+    # with right:
+    #     render_extraction_pipeline()
     return claims
 
 
@@ -245,7 +268,7 @@ def render_claims_table(claims: list[dict[str, Any]]) -> None:
     status_filter = st.multiselect("Filter by status", STATUSES, default=[], label_visibility="collapsed")
     filtered = [c for c in claims if (not query or query.lower() in json.dumps(c).lower()) and (not status_filter or c.get("status") in status_filter)]
     rows = [{"Claim": c["id"], "Patient": c["patient"], "Payer": c["payer"], "Amount": money(float(c["amount"])), "Risk": f"{c['risk_band']} ({c['risk_score']})", "Status": c["status"], "Top edit": (c.get("validation") or [{}])[0].get("message", "Clean")} for c in filtered]
-    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True, height=310)
+    st.dataframe(pd.DataFrame(rows), width='stretch', hide_index=True, height=310)
     if not filtered:
         st.info("No claims match the current filters.")
     else:
@@ -264,8 +287,13 @@ def render_claim_detail(claims: list[dict[str, Any]]) -> list[dict[str, Any]]:
         st.markdown(f'<div class="panel"><div class="claim-id">{claim["id"]} · {claim["patient"]}</div><div class="small" style="margin-top:.4rem">{claim["payer"]} · source {claim["source_file"]}</div><div style="margin-top:.8rem">{badge(claim["status"])} &nbsp; {badge(claim["risk_band"] + " risk", "risk-" + claim["risk_band"].lower())}</div></div>', unsafe_allow_html=True)
     with action:
         new_status = st.selectbox("Route claim", STATUSES, index=STATUSES.index(claim["status"]), key=widget_key("route_claim_status"))
-        if st.button("Save workflow state", type="primary", use_container_width=True, key=widget_key("save_workflow_state")):
-            update_claim(claims, claim["id"], status=new_status)
+        if st.button("Save workflow state", type="primary", width='stretch', key=widget_key("save_workflow_state")):
+            if api_enabled():
+                updated_claim = api_update_claim_status(claim["id"], new_status)
+                claim.clear()
+                claim.update(updated_claim)
+            else:
+                update_claim(claims, claim["id"], status=new_status)
             st.success("Workflow state saved")
             st.rerun()
     detail, issues = st.columns([1.15, 1])
@@ -324,7 +352,7 @@ def render_analytics(claims: list[dict[str, Any]]) -> None:
     for claim in claims:
         for issue in claim.get("validation", []):
             issue_rows.append({"Edit": issue["code"], "Severity": issue["severity"], "Claim": claim["id"], "Payer": claim["payer"]})
-    st.dataframe(pd.DataFrame(issue_rows) if issue_rows else pd.DataFrame([{"Edit": "None", "Severity": "-", "Claim": "-", "Payer": "-"}]), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(issue_rows) if issue_rows else pd.DataFrame([{"Edit": "None", "Severity": "-", "Claim": "-", "Payer": "-"}]), width='stretch', hide_index=True)
 
 
 def render_reports(claims: list[dict[str, Any]]) -> None:
@@ -342,7 +370,14 @@ def render_reports(claims: list[dict[str, Any]]) -> None:
     st.download_button("Download report", content, "claimpilot-report.txt", "text/plain", type="primary", key=widget_key("download_operational_report"))
 
 
-claims = load_claims()
+if api_enabled():
+    try:
+        claims = api_claims()
+    except requests.RequestException as error:
+        st.error(f"Could not connect to the ClaimPilot API: {error}")
+        claims = []
+else:
+    claims = load_claims()
 render_sidebar(claims)
 
 st.markdown('<div class="hero"><div><div class="eyebrow">Northstar Billing Group / Operations</div><h1>ClaimPilot</h1><div class="subtitle">Make every claim explainable before it becomes expensive.</div></div><div style="text-align:right"><div class="small">Tuesday, September 17, 2026</div><div style="font-size:.82rem;color:#087f73;font-weight:700;margin-top:.3rem">● SYSTEMS NOMINAL</div></div></div>', unsafe_allow_html=True)

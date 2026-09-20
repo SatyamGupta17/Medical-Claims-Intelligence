@@ -1,15 +1,3 @@
-# # app/main.py
-
-# from fastapi import FastAPI
-
-# app = FastAPI()
-
-# @app.get("/")
-# def home():
-#     return {"message": "RAG API Running"}
-
-# app/main.py
-
 from datetime import datetime, timezone
 from io import BytesIO
 from pathlib import Path

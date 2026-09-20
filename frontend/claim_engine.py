@@ -12,11 +12,27 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import requests
 from dotenv import load_dotenv
 
 
 CLAIMS_FILE = Path(__file__).resolve().parent / "claims.json"
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+
+
+def setting(name: str, default: str = "") -> str:
+    value = os.getenv(name)
+    if value:
+        return value
+    try:
+        import streamlit as st
+
+        return str(st.secrets.get(name, default))
+    except (ImportError, FileNotFoundError, KeyError):
+        return default
+
+
+API_URL = setting("CLAIMPILOT_API_URL").rstrip("/")
 
 STATUSES = ["Needs review", "Ready to submit", "Submitted", "Paid", "Denied"]
 STATUS_COLORS = {
@@ -30,6 +46,36 @@ STATUS_COLORS = {
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def api_enabled() -> bool:
+    return bool(API_URL)
+
+
+def api_claims() -> list[dict[str, Any]]:
+    response = requests.get(f"{API_URL}/api/claims", timeout=20)
+    response.raise_for_status()
+    return response.json()["claims"]
+
+
+def api_upload_claim(filename: str, content: bytes) -> dict[str, Any]:
+    response = requests.post(
+        f"{API_URL}/api/claims/upload",
+        files={"file": (filename, content)},
+        timeout=60,
+    )
+    response.raise_for_status()
+    return response.json()["claim"]
+
+
+def api_update_claim_status(claim_id: str, status: str) -> dict[str, Any]:
+    response = requests.patch(
+        f"{API_URL}/api/claims/{claim_id}/status",
+        json={"status": status},
+        timeout=20,
+    )
+    response.raise_for_status()
+    return response.json()
 
 
 def auto_route(claim: dict[str, Any]) -> tuple[str, str]:
@@ -53,7 +99,7 @@ def deterministic_explanation(claim: dict[str, Any]) -> str:
 
 def generate_ai_explanation(claim: dict[str, Any]) -> tuple[str, str]:
     """Use Groq when configured, with an auditable local fallback."""
-    api_key = os.getenv("GROQ_API_KEY")
+    api_key = setting("GROQ_API_KEY")
     if not api_key:
         return deterministic_explanation(claim), "rules-engine"
     try:
@@ -67,7 +113,7 @@ def generate_ai_explanation(claim: dict[str, Any]) -> tuple[str, str]:
             "validation_edits": claim.get("validation", []),
         }
         response = Groq(api_key=api_key).chat.completions.create(
-            model=os.getenv("GROQ_MODEL", "openai/gpt-oss-120b"),
+            model=setting("GROQ_MODEL", "openai/gpt-oss-120b"),
             temperature=0.1,
             max_tokens=220,
             messages=[
@@ -228,18 +274,18 @@ def recommendation(claim: dict[str, Any]) -> str:
 
 
 def seed_claims() -> list[dict[str, Any]]:
-    samples = [
-        "Claim ID: CLM-24081\nPatient: Maya Patel\nMember ID: HZP-902144\nPayer: Horizon Health\nProvider: Northstar Family Clinic\nNPI: 1245789630\nDate of Service: 08/28/2026\nDiagnosis: J06.9\nProcedure: 99213\nBilled Amount: $185.00\nPlace of Service: 11",
-        "Claim ID: CLM-24082\nPatient: Oliver Chen\nMember ID: AET-551028\nPayer: Aetna\nProvider: Harborview Ortho\nNPI: 1245789630\nDate of Service: 08/29/2026\nDiagnosis: M25.561\nProcedure: 99214\nBilled Amount: $640.00\nPlace of Service: 22",
-        "Claim ID: CLM-24083\nPatient: Sofia Rivera\nMember ID: Not provided\nPayer: Meridian Health\nProvider: Westside Imaging\nDate of Service: 08/30/2026\nDiagnosis: R10.9\nProcedure: 74177\nBilled Amount: $6,450.00\nPlace of Service: 22",
-        "Claim ID: CLM-24084\nPatient: Ethan Williams\nMember ID: UHC-771240\nPayer: United Healthcare\nProvider: Lakeside Pediatrics\nNPI: 1245789630\nDate of Service: 09/01/2026\nDiagnosis: Z00.129\nProcedure: 99393\nBilled Amount: $240.00\nPlace of Service: 11",
-    ]
-    claims = [extract_claim(text, "synthetic_batch.txt") for text in samples]
-    claims[0]["status"] = "Ready to submit"
-    claims[1]["status"] = "Submitted"
-    claims[2]["status"] = "Needs review"
-    claims[3]["status"] = "Paid"
-    return claims
+    # samples = [
+    #     "Claim ID: CLM-24081\nPatient: Maya Patel\nMember ID: HZP-902144\nPayer: Horizon Health\nProvider: Northstar Family Clinic\nNPI: 1245789630\nDate of Service: 08/28/2026\nDiagnosis: J06.9\nProcedure: 99213\nBilled Amount: $185.00\nPlace of Service: 11",
+    #     "Claim ID: CLM-24082\nPatient: Oliver Chen\nMember ID: AET-551028\nPayer: Aetna\nProvider: Harborview Ortho\nNPI: 1245789630\nDate of Service: 08/29/2026\nDiagnosis: M25.561\nProcedure: 99214\nBilled Amount: $640.00\nPlace of Service: 22",
+    #     "Claim ID: CLM-24083\nPatient: Sofia Rivera\nMember ID: Not provided\nPayer: Meridian Health\nProvider: Westside Imaging\nDate of Service: 08/30/2026\nDiagnosis: R10.9\nProcedure: 74177\nBilled Amount: $6,450.00\nPlace of Service: 22",
+    #     "Claim ID: CLM-24084\nPatient: Ethan Williams\nMember ID: UHC-771240\nPayer: United Healthcare\nProvider: Lakeside Pediatrics\nNPI: 1245789630\nDate of Service: 09/01/2026\nDiagnosis: Z00.129\nProcedure: 99393\nBilled Amount: $240.00\nPlace of Service: 11",
+    # ]
+    # claims = [extract_claim(text, "synthetic_batch.txt") for text in samples]
+    # claims[0]["status"] = "Ready to submit"
+    # claims[1]["status"] = "Submitted"
+    # claims[2]["status"] = "Needs review"
+    # claims[3]["status"] = "Paid"
+    return []
 
 
 def load_claims() -> list[dict[str, Any]]:
