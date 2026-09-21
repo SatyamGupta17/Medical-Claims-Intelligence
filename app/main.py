@@ -5,7 +5,6 @@ from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from pydantic import BaseModel
-import shutil
 
 from frontend.claim_engine import load_claims, save_claims, update_claim, extract_claim
 
@@ -124,72 +123,4 @@ def operational_report():
         "priority_claims": sorted(claims, key=lambda claim: claim.get("risk_score", 0), reverse=True)[:10],
     }
 
-
-# Upload Route
-@app.post("/upload")
-async def upload(file: UploadFile):
-    from app.chunker import chunk_text
-    from app.embeddings import create_embedding
-    from app.extractor import extract_text
-    from app.vector_store import store_embeddings
-
-    # Save uploaded file
-    file_path = f"uploads/{file.filename}"
-
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    # Extract text
-    text = extract_text(file_path)
-
-    # Chunk text
-    chunks = chunk_text(text)
-
-    # Generate embeddings
-    embeddings = []
-
-    for chunk in chunks:
-
-        emb = create_embedding(chunk)
-
-        embeddings.append(emb)
-
-    # Store in FAISS
-    store_embeddings(chunks, embeddings, file.filename)
-
-    return {
-        "message": "Document uploaded successfully",
-        "chunks": len(chunks)
-    }
-
-
-# Chat Route 
-@app.post("/chat")
-async def chat(query: str):
-    from app.embeddings import create_embedding
-    from app.rag import ask_llm
-    from app.vector_store import search
-
-    # Create query embedding
-    query_embedding = create_embedding(query)
-
-    # Search relevant chunks
-    results = search(query_embedding)
-
-    chunks = results["documents"][0]
-
-    metadata = results["metadatas"][0]
-
-    print("Retrieved Chunks:", chunks)
-
-    # Build context
-    context = "\n".join(chunks)
-
-    # Generate answer
-    answer = ask_llm(context, query)
-
-    return {
-        "answer": answer,
-        "sources": metadata
-    }
 

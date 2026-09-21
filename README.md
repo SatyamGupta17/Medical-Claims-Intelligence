@@ -85,7 +85,7 @@ Never commit `.env`. It is ignored by `.gitignore`. Rotate any credentials that 
 
 ## Run ClaimPilot
 
-The main product is the Streamlit frontend. The FastAPI RAG service is not required for claim intake, validation, routing, dashboard analytics, or reports.
+The main product is the Streamlit frontend. The FastAPI service is used for the claims API and does not include the legacy document-RAG workflow.
 
 From the repository root:
 
@@ -120,7 +120,7 @@ Docker deployment runs two services:
 - `api`: FastAPI claims backend on port `8000`
 - `frontend`: Streamlit operations console on port `8501`
 
-The Compose setup persists `frontend/claims.json`, `uploads/`, and `data/` on the host. The deployment image uses `requirements-deploy.txt`, which contains the production claims workflow dependencies and does not download the optional legacy RAG embedding model during startup.
+The Compose setup persists `frontend/claims.json`, `uploads/`, and `data/` on the host. The deployment image uses `requirements-deploy.txt`, which contains the production claims workflow dependencies for the claim intake and analytics app.
 
 ### Prerequisites
 
@@ -276,7 +276,7 @@ zip_path = Path("data/medical_claim_samples.zip")
 
 ## FastAPI backend
 
-The FastAPI backend now exposes the ClaimPilot claims API as well as the original document RAG endpoints. Start it from the repository root in a second terminal:
+The FastAPI backend exposes the ClaimPilot claims API. Start it from the repository root in a second terminal:
 
 ```powershell
 .\venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
@@ -319,9 +319,10 @@ The Streamlit console can run without this backend because it uses the same loca
 ```text
 Document-rag/
 ├── app/
-│   ├── main.py              # Optional FastAPI RAG service
+│   ├── main.py              # FastAPI claims service
 │   ├── extractor.py         # PDF text extraction
-│   └── rag.py               # Groq document Q&A helper
+│   └── api/
+│       └── debug.py         # Optional debug endpoints
 ├── frontend/
 │   ├── app.py               # ClaimPilot Streamlit application
 │   ├── claim_engine.py      # Extraction, validation, risk, AI, routing

@@ -10,4 +10,4 @@ From the repository root, run:
 
 Then open http://localhost:8501.
 
-See the repository [README](../README.md) for complete setup, configuration, supported claim formats, troubleshooting, and optional FastAPI RAG service instructions.
+See the repository [README](../README.md) for complete setup, configuration, supported claim formats, and troubleshooting instructions for the ClaimPilot workflow.
