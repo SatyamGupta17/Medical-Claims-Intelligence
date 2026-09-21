@@ -17,10 +17,10 @@ class ClaimStatusUpdate(BaseModel):
 
 def _claim_text(filename: str, content: bytes) -> str:
     suffix = Path(filename).suffix.lower()
-    if suffix == ".pdf":
-        from app.extractor import extract_text
+    if suffix in {".pdf", ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".webp"}:
+        from app.extractor import extract_image_text, extract_text
 
-        return extract_text(content)
+        return extract_text(content) if suffix == ".pdf" else extract_image_text(content)
     if suffix == ".docx":
         from docx import Document
 
@@ -55,10 +55,10 @@ def health():
 
 @app.post("/api/claims/upload")
 async def upload_claim(file: UploadFile = File(...)):
-    supported = {".txt", ".csv", ".json", ".pdf", ".docx"}
+    supported = {".txt", ".csv", ".json", ".pdf", ".docx", ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".webp"}
     filename = Path(file.filename or "claim.txt").name
     if Path(filename).suffix.lower() not in supported:
-        raise HTTPException(status_code=400, detail="Supported claim files: TXT, CSV, JSON, PDF, DOCX")
+        raise HTTPException(status_code=400, detail="Supported claim files: TXT, CSV, JSON, PDF, DOCX, PNG, JPG, TIFF, BMP, WEBP")
     content = await file.read()
     if not content:
         raise HTTPException(status_code=400, detail="Uploaded claim document is empty")

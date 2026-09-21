@@ -1,5 +1,59 @@
 [
   {
+    "id": "CLM-2026-0004",
+    "patient_id": "P1eee4",
+    "patient": "Will Jacks",
+    "patient_dob": "1990-11-11",
+    "member_id": "AET4Q004",
+    "payer": "Aetna",
+    "provider": "Westside Medical Group",
+    "npi": "12345",
+    "service_date": "2026-08-10",
+    "diagnosis": "Procedure Codes: 99214",
+    "procedure": "99214",
+    "amount": 2500.0,
+    "allowed_amount": 1200.0,
+    "paid_amount": 1500.0,
+    "place_of_service": "99",
+    "source_file": "claim_001.png",
+    "status": "Needs review",
+    "created_at": "2026-09-21T22:25:14.724155+00:00",
+    "updated_at": "2026-09-21T22:25:14.724164+00:00",
+    "notes": [],
+    "workflow_history": [
+      {
+        "status": "Needs review",
+        "reason": "High-severity edit requires correction",
+        "at": "2026-09-21T22:25:14.724155+00:00"
+      }
+    ],
+    "validation": [
+      {
+        "severity": "High",
+        "code": "INVALID_NPI",
+        "message": "NPI must contain exactly 10 digits",
+        "action": "Verify the rendering provider NPI"
+      },
+      {
+        "severity": "High",
+        "code": "PAID_EXCEEDS_ALLOWED",
+        "message": "Paid amount exceeds allowed amount",
+        "action": "Reconcile remittance and payment amounts"
+      },
+      {
+        "severity": "Medium",
+        "code": "POS_CODE",
+        "message": "Place of service code is not in the supported set",
+        "action": "Verify the POS code against payer policy"
+      }
+    ],
+    "risk_score": 68,
+    "risk_band": "High",
+    "recommendation": "Hold claim. Correct high-severity data issues and re-run validation before submission.",
+    "ai_explanation": "**Claim Evidence Summary (CLM\u20112026\u20110004)**  \n\n| Edit | Reason (concise) | Recommended Action |\n|------|------------------|--------------------|\n| **INVALID_NPI** (High) | The rendering provider\u2019s NPI does not contain exactly 10 digits. | Verify and correct the provider\u2019s NPI to a 10\u2011digit value. |\n| **PAID_EXCEEDS_ALLOWED** (High) | The paid amount ($2,500) is higher than the payer\u2011allowed amount for CPT\u202f99214. | Reconcile the remittance and payment",
+    "ai_source": "groq"
+  },
+  {
     "id": "CLM-SAMPLE-0004",
     "patient_id": "P10004",
     "patient": "Emily Davis",

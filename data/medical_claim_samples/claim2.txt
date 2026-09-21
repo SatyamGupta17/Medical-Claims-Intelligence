@@ -1,0 +1,16 @@
+Claim Number: CLM-2026-0004
+Patient ID: P10004
+Patient Name: Will Jacks
+Patient DOB: 1990-11-11
+Payer: Aetna
+Member ID: AET40004
+Provider NPI: 12345
+Provider Name: Westside Medical Group
+Date of Service: 2026-08-10
+Place of Service: 99
+Diagnosis Codes:
+Procedure Codes: 99214
+Billed Amount: 2500.00
+Allowed Amount: 1200.00
+Paid Amount: 1500.00
+Claim Status: Error

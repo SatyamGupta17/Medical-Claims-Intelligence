@@ -30,7 +30,7 @@ from claim_engine import (
     save_claims,
     update_claim,
 )
-from app.extractor import extract_text
+from app.extractor import extract_image_text, extract_text
 
 st.set_page_config(page_title="ClaimPilot | Revenue Operations", page_icon="CP", layout="wide", initial_sidebar_state="expanded")
 
@@ -161,6 +161,11 @@ def parse_upload(uploaded_file: Any) -> str:
             return extract_text(content)
         except ValueError as error:
             raise RuntimeError(str(error)) from error
+    if suffix in {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".webp"}:
+        try:
+            return extract_image_text(content)
+        except ValueError as error:
+            raise RuntimeError(str(error)) from error
     if suffix == ".docx":
         try:
             from docx import Document
@@ -224,7 +229,7 @@ def render_extraction_result(claim: dict[str, Any]) -> None:
 
 def render_upload(claims: list[dict[str, Any]]) -> list[dict[str, Any]]:
     st.markdown('<div class="section"><div class="eyebrow">Intake</div><h2>Upload and structure a claim</h2><div class="subtitle">Drop a synthetic UB-04, CMS-1500, remittance, or labeled text document. ClaimPilot extracts fields and runs edits immediately.</div></div>', unsafe_allow_html=True)
-    uploaded = st.file_uploader("Claim document", type=["pdf", "txt", "csv", "json", "docx"], label_visibility="collapsed", key=widget_key("claim_document_uploader"))
+    uploaded = st.file_uploader("Claim document", type=["pdf", "txt", "csv", "json", "docx", "png", "jpg", "jpeg", "tif", "tiff", "bmp", "webp"], label_visibility="collapsed", key=widget_key("claim_document_uploader"))
     if uploaded:
         st.caption(f"{uploaded.name} · {uploaded.size / 1024:.1f} KB")
         with st.status("Processing claim document", expanded=True) as processing:

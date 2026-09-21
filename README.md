@@ -6,7 +6,7 @@ ClaimPilot is a Streamlit-based medical billing operations console for synthetic
 
 ## Features
 
-- Upload synthetic `TXT`, `CSV`, `JSON`, `PDF`, and `DOCX` claim documents
+- Upload synthetic `TXT`, `CSV`, `JSON`, `PDF`, `DOCX`, and image claim documents
 - Extract patient, payer, provider, NPI, service date, diagnosis, procedure, POS, and charge fields
 - Validate required fields, NPI format, charge amount, date format, code pairing, and POS values
 - Identify high- and medium-severity denial risks
@@ -69,6 +69,8 @@ Verify the document parsers:
 ```powershell
 python -c "import docx, fitz; print('document parsers available')"
 ```
+
+Image uploads and scanned PDFs use Tesseract OCR. Install the Tesseract executable separately on Windows and ensure `tesseract.exe` is on `PATH`; the Python package is installed by `requirements.txt`.
 
 ## Configure AI explanations
 
